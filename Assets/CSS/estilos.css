@@ -21,6 +21,8 @@ body, p, input, button, div {
     align-items: center;
     justify-content: flex-start;
     background-color: white;
+    z-index: 2;
+    position: fixed;
 }
 
 .pagina-entrada img {
