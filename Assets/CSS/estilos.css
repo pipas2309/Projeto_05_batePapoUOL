@@ -1,0 +1,156 @@
+/* CONFIGURAÇÕES GERAIS */
+* {
+    box-sizing: border-box;
+}
+
+body, p, input, button, div {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+
+
+/* CONFIGURAÇÃO PAGINA ENTRADA */
+.pagina-entrada {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: white;
+}
+
+.pagina-entrada img {
+    width: 130px;
+    height: 92px;
+    margin-top: 72px;
+}
+
+.pagina-entrada input {
+    width: 269px;
+    height: 54px;
+    text-align: center;
+    margin-top: 94px;
+    border-radius: 4px;
+    border: 1px solid #D7D7D7;
+    background-color: white;
+    font-size: 18px;
+    color: #aeaeae;
+}
+
+.pagina-entrada button {
+    width: 110px;
+    height: 45px;
+    margin-top: 15px;
+    border-radius: 9px;
+    background-color: #E7E7E7;
+    border: none;
+    font-size: 18px;
+    color: #696969;
+}
+
+
+
+
+/* CONFIGURAÇÕES DA PAGINA PRINCIPAL */
+.pagina {
+
+}
+
+/* config. topo */
+.topo {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 23px;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    z-index: 1;
+}
+
+.topo img {
+    width: 75px;
+    height: auto;
+}
+
+.topo ion-icon {
+    font-size: 45px;
+}
+
+/* config. area de mensagens */
+.area-mensagens {
+    width: 100%;
+    height: 100%;
+    padding-top: 103px;
+    background-color: #F3F3F3;
+    
+}
+
+.mensagem {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+    margin-top: 5px;
+    line-height: 16.4px;
+}
+
+.hora {
+    color: #AAAAAA;
+    margin-right: 8px;
+}
+
+.chat-usuarios {
+    color: black;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.texto-mensagem {
+
+}
+
+.aviso {
+    background-color: #DCDCDC;
+}
+
+.privado {
+    background-color: #FFDEDE;
+}
+
+/* config rodapé */
+.rodape {
+    
+}
+
+.rodape input {
+    
+}
+
+.rodape ion-icon {
+    
+}
+
+
+
+
+
+
+
+
+/* VISUAIS & EFEITOS */
+
+.escondido {
+    display: none;
+}
