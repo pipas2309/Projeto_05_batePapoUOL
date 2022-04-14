@@ -4,9 +4,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Projeto_05_batePapoUOL/Assets/CSS/reset.css">
+    <link rel="stylesheet" href="/Projeto_05_batePapoUOL/Assets/CSS/estilos.css">
     <title>Bate-Papo da Bol</title>
 </head>
 <body>
-    
+    <div class="pagina-entrada">
+        <img src="/Projeto_05_batePapoUOL/Assets/imagens/logo 1.svg">
+        <input type="text" placeholder="Digite seu nome">
+        <button>Entrar</button>
+    </div>
+    <div class="pagina">
+        <div class="topo">
+            <img src="/Projeto_05_batePapoUOL/Assets/imagens/logo 1.svg">
+            <ion-icon name="people"></ion-icon>
+        </div>
+        <div class="area-mensagens">
+            <div class="teste mensagem"><p class="hora">(09:21:45)</p><strong class="chat-usuario">João</strong><p class="texto-mensagem">Entra na sala...</p></div>
+        </div>
+        <div class="rodape">
+            <input type="text" placeholder="Escreva aqui...">
+            <ion-icon name="paper-plane-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="menu-lateral">
+        <div class="escolha-contato">
+            <div class="contato-todos"></div>
+            <div class="contato-ativo"></div>
+        </div>
+        <div class="escolha-visibilidade">
+            <div class="visibilidade-publica"></div>
+            <div class="visibilidade-privada"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/Projeto_05_batePapoUOL/Assets/JS/scripts.js"></script>
 </body>
 </html>
