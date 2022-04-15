@@ -25,7 +25,7 @@ body, p, input, button, div {
     position: fixed;
 }
 
-.pagina-entrada img {
+.pagina-entrada img:first-child {
     width: 130px;
     height: 92px;
     margin-top: 72px;
@@ -54,7 +54,25 @@ body, p, input, button, div {
     color: #696969;
 }
 
+.erro {
+    margin-top: 100px;
+    width: 70%;
+    height: auto;
+    border: 4px solid transparent;
+    border-radius: 20px;
+    background: 
+    linear-gradient(to right, white, white), 
+    linear-gradient(to right, red , blue); 
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+}
 
+.entrando {
+    margin-top: 100px;
+    width: 70%;
+    height: auto;
+    pointer-events: none;
+}
 
 
 /* CONFIGURAÇÕES DA PAGINA PRINCIPAL */
@@ -173,8 +191,8 @@ strong {
     width: 269px;
     height: 100%;
     position: fixed;
-    right: 0;
-    top: 0;
+    right: 0px;
+    top: 0px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -186,6 +204,7 @@ strong {
 
 .menu-lateral p {
     font-size: 16px;
+
 }
 
 .escolha-contato > p{
@@ -200,12 +219,10 @@ strong {
     height: 36px;
     display: flex;
     margin-left: 18px;
+    padding-right: 30px;
     align-items: center;
-}
-
-.contato-todos ion-icon {
     font-size: 25px;
-    margin-right: 8px;
+    justify-content: space-between;
 }
 
 .contato-ativo {
@@ -214,10 +231,32 @@ strong {
     display: flex;
     margin-left: 18px;
     align-items: center;
+    font-size: 25px;
+    padding-right: 30px;
+    justify-content: space-between;
 }
 
-.contato-ativo ion-icon {
-    font-size: 25px;
+.contato-todos span, .contato-ativo span, .visibilidade-privada span, .visibilidade-publica span{
+    display: flex;
+    align-items: center;
+}
+
+.contato-todos p, .contato-ativo p, .visibilidade-privada p, .visibilidade-publica p{
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contato-todos p:hover, .contato-ativo p:hover, .visibilidade-privada p:hover, .visibilidade-publica p:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+    max-height: 32px;
+}
+
+
+.contato-todos ion-icon, .contato-ativo ion-icon, .visibilidade-publica ion-icon, .visibilidade-privada ion-icon {
     margin-right: 8px;
 }
 
@@ -229,31 +268,31 @@ strong {
 }
 
 .visibilidade-publica {
-    width: 100%;
+    width: 269px;
     height: 36px;
     display: flex;
     margin-left: 18px;
-    align-items: center;    
-}
-
-.visibilidade-publica ion-icon {
-    font-size: 25px;
-    margin-right: 8px;   
+    align-items: center;   
+    font-size: 25px; 
+    padding-right: 30px;
+    justify-content: space-between;
 }
 
 .visibilidade-privada {
-    width: 100%;
+    width: 269px;
     height: 36px;
     display: flex;
     margin-left: 18px;
     align-items: center;
-}
-
-.visibilidade-privada ion-icon {
     font-size: 25px;
-    margin-right: 8px;
+    padding-right: 30px;
+    justify-content: space-between;
 }
 
+.check {
+    color: green;
+    font-size: 15px;
+}
 
 
 /* VISUAIS & EFEITOS */
