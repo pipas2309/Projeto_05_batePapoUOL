@@ -77,7 +77,9 @@ body, p, input, button, div {
 
 /* CONFIGURAÇÕES DA PAGINA PRINCIPAL */
 .pagina {
-
+    width: 100%;
+    height: 100%;
+    
 }
 
 /* config. topo */

@@ -1,16 +1,15 @@
 // VARIÁVEIS GLOBAIS
-let nomeUsuario = 
-{
-    name: ""
-};
+const nomeUsuario = {}
 let lista = [];
-
+let novaLista = [];
+let entrando = 0;
 
 // BOTÃO ENTRADA NO BATE-PAPO
 function entrarBatePapo() {
-    nomeUsuario.name = document.querySelector("input").value;
-    
-    const requisicao = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/participants',nomeUsuario);
+    const recebeInput = document.querySelector("input").value;
+    nomeUsuario.name = recebeInput;
+
+    const requisicao = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants", nomeUsuario);
 
     requisicao.then(usuarioRegistrado);
     requisicao.catch(falhaLogin);
@@ -24,11 +23,23 @@ function usuarioRegistrado (resposta) {
         document.querySelector(".erro").remove();
     }
 
-    entrandoNaPagina();
+    // console.log(nomeUsuario.name)
+    // let usuario = 
+    // {
+    //     "from": nomeUsuario.name,
+    //     "to": "Todos",
+    //     "text": "entrou na sala...",
+    //     "type": "status"
+    // }
+    
+    // const promisse = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', usuario);
 
+    // promisse.then(entrandoNaPagina)
+    // promisse.catch(falhaLogin)
 
+    document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
 
-    return setInterval(estouOnline, 5000);
+    return conexaoEstavel();
 }
 
 // FUNÇÃO SE NÃO FOR POSSÍVEL ENTRAR NO BATE-PAPO COM O NOME ESCOLHIDO
@@ -44,87 +55,62 @@ function falhaLogin (erro) {
     alert(`ERRO DETECTADO\nVocê não poderá entrar com o nome escolhido, selecione outro!`);
 }
 
-// FUNÇÃO DE MANTER CONEXÃO DO USUÁRIO
-function estouOnline () {
-    console.log("executei -ESTOU ONLINE-");
-    console.log(nomeUsuario);
-    nomeUsuario = axios.post("https://mock-api.driven.com.br/api/v6/uol/status");
+// // FUNÇÃO DE MANTER CONEXÃO DO USUÁRIO
+// function estouOnline () {
+
+//     const online = axios.post("https://mock-api.driven.com.br/api/v6/uol/status", nomeUsuario);
+// }
+
+function conexaoEstavel() {
+
+    //Manter conexão API - Status - FUNCIONANDO
+    const conexaoStatus = setInterval(function() {
+        const online = axios.post("https://mock-api.driven.com.br/api/v6/uol/status", nomeUsuario);
+    },5000);
+
+    //Manter usuários atualizados API - Participants
+    const participantesConectados = setInterval(function() {
+
+    },10000)
+
+    //Manter Chat Vivo API - Messages
+    const mensagensAtualizadas = setInterval(function(){
+        const promisse = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
+        promisse.then(carregarMensagens);
+    },3000)
 }
 
-function entrandoNaPagina () {
+// Função que carrega e recarrega as mensagens no site
+function carregarMensagens(el) {
+    lista = el.data;
+    const area = document.querySelector(".area-mensagens");
+    area.innerHTML = "";
 
-    document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
-
-    // setTimeout(() => {
-    //     document.querySelector(".pagina-entrada").classList.add("escondido");
-    //     document.querySelector(".pagina").classList.remove("escondido");
-    // },3000);
-
-    const promisse = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
-
-    promisse.then(abrirPagina);
-    promisse.catch(falhaLogin);
-}
-
-function abrirPagina(el) {
-
-    lista = el;
-    for (let i = 0; i < lista.data.length; i++) {
-
-        const area = document.querySelector(".area-mensagens");
-       
-        if(lista.data[i].type === "status") {
-            area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${lista.data[i].time}</em> <em class='chat-usuarios'><strong>${lista.data[i].from}</strong></em>${lista.data[i].text}</p></div>`;
-        } else if (lista.data[i].type === "message") {
-            area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista.data[i].time}</em> <em class='chat-usuarios'><strong>${lista.data[i].from}</strong> para <strong>${lista.data[i].to}</strong>:</em>${lista.data[i].text}</p></div>`;
-        } else if (lista.data[i].type === "private_message") {
-            area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista.data[i].time}</em> <em class='chat-usuarios'><strong>${lista.data[i].from}</strong> para <strong>${lista.data[i].to}</strong>:</em>${lista.data[i].text}</p></div>`;
+    for (let i = 0; i < lista.length; i++) {
+        
+        if(lista[i].type === "status") {
+            area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong></em>${lista[i].text}</p></div>`;
+        } else if (lista[i].type === "message") {
+            area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
+        } else if (lista[i].type === "private_message") {
+            area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
         }
     }
-
-    
-
-    document.querySelector(".pagina-entrada").classList.add("escondido");
-    document.querySelector(".pagina").classList.remove("escondido");
-    document.querySelector(".area-mensagens").lastElementChild.scrollIntoView();
-
-    return setInterval(carregarMensagens,3000);
-}
-
-function carregarMensagens() {
-    
-    document.querySelector(".area-mensagens").lastElementChild.scrollIntoView();
-
-    const promisse = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
-
-    promisse.then(novasMensagens);
-    promisse.catch(falhaLogin);
-
-    document.querySelector(".area-mensagens").lastElementChild.scrollIntoView();
-}
-
-function novasMensagens(el) {
-
-    const novaLista = el;
-
-    if(lista.data === novaLista.data) {
-        console.log("é igual")
-    } else {
-        console.log("é diferente")
+    if(entrando === 0) {
+        document.querySelector(".pagina-entrada").classList.add("escondido");
+        document.querySelector(".pagina").classList.remove("escondido");
+        entrando = 1;
     }
 
-    for(let i = 0; i < lista.data.length; i++) {
-        for(let j = 0; j < novaLista.data.length; j++) {
-            
-            if(lista.data[i].indexOf(novaLista.data[j]) !== -1) {
-                if(novaLista.data[j].type === "status") {
-                    area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${novaLista.data[j].time}</em> <em class='chat-usuarios'><strong>${novaLista.data[j].from}</strong></em>${novaLista.data[j].text}</p></div>`;
-                } else if (novaLista.data[j].type === "message") {
-                    area.innerHTML += `<div class='mensagem'><p><em class='hora'>${novaLista.data[j].time}</em> <em class='chat-usuarios'><strong>${novaLista.data[j].from}</strong> para <strong>${novaLista.data[j].to}</strong>:</em>${novaLista.data[j].text}</p></div>`;
-                } else if (novaLista.data[j].type === "private_message") {
-                    area.innerHTML += `<div class='mensagem'><p><em class='hora'>${novaLista.data[j].time}</em> <em class='chat-usuarios'><strong>${novaLista.data[j].from}</strong> para <strong>${novaLista.data[j].to}</strong>:</em>${novaLista.data[j].text}</p></div>`;
-                }
-            }
-        }
-    }
+    area.scrollIntoView(false)
+}
+
+
+function participantesAtivos(el) {
+
+}
+
+
+function enviarMensagem() {
+    document.querySelector(".")
 }
