@@ -1,5 +1,5 @@
 // VARIÁVEIS GLOBAIS
-const nomeUsuario = {}
+const nomeUsuario = {};
 let lista = [];
 let participantesOnline = [];
 let entrando = 0;
@@ -7,19 +7,6 @@ let usuarioSelecionado = "Todos";
 let privacidadeSelecionada = "Público";
 let atualizaUsuarios = 0;
 
-// IMPLEMENTANDO O ENTER PARA ENVIAR INPUT
-document.querySelector(".pagina-entrada input").addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-    event.preventDefault();
-    document.querySelector(".pagina-entrada button").click();
-    }
-});
-document.querySelector(".pagina .rodape input").addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        document.querySelector(".pagina .rodape ion-icon").click();
-    }
-});
 
 
 // BOTÃO ENTRADA NO BATE-PAPO
@@ -30,6 +17,9 @@ function entrarBatePapo() {
     const requisicao = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants", nomeUsuario);
 
     document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando gato' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
+    if(document.querySelector(".erro")) {
+        document.querySelector(".erro").remove();
+    }
 
     requisicao.then(usuarioRegistrado);
     requisicao.catch(falhaLogin);
@@ -38,10 +28,6 @@ function entrarBatePapo() {
 
 // FUNÇÃO SE FOR POSSÍVEL ENTRAR NO BATE-PAPO COM O NOME ESCOLHIDO
 function usuarioRegistrado (resposta) {
-
-    if(document.querySelector(".erro")) {
-        document.querySelector(".erro").remove();
-    }
 
     //Atualiza os usuários online ao entrar na página, uma única vez
     const listaInicial = setTimeout(function() {
@@ -144,44 +130,46 @@ function participantesAtivos(el) {
         `;
         }
     }
+
+    //se o usuário selecionado desconectar, seleciona TODOS
     if(atualizaUsuarios === 0) {
         document.querySelector(".contato-todos").lastElementChild.classList.add("check");
         document.querySelector(".contato-todos").lastElementChild.classList.remove("escondido");
         usuarioSelecionado = "Todos";
     }
     atualizaUsuarios = 0;
+
+    //atualiza a barra te enviar texto, dizendo com quem está falando
+    atualizaInput();
 }
 
+// FUNÇÃO DE TEXTO PARA O INPUT ENVIAR MENSAGEM
+function atualizaInput () {
+    if(usuarioSelecionado !== "Todos") {
+        if(privacidadeSelecionada === "Reservadamente") {
+            document.querySelector(".pagina .rodape input").setAttribute(`placeholder`, `Enviando para ${usuarioSelecionado} (reservadamente)`);
+        } else {
+            document.querySelector(".pagina .rodape input").setAttribute(`placeholder`, `Enviando para ${usuarioSelecionado}`);
+        }
+
+    } else {
+        document.querySelector(".pagina .rodape input").setAttribute(`placeholder`, `Escreva aqui...`);
+    }
+}
+
+// FUNÇÃO SELECIONA O USUÁRIO NO MENU LATERAL
 function selecionarUsuario(el) {
     if(el.innerText === usuarioSelecionado) {
-        console.log("mesmuzuario, nada acontece");
         return;        
     }
-
-    // if(atualizaUsuarios === 1) {
-    //     console.log("tesntando manter check")
-    //     if(document.querySelector(`.${usuarioSelecionado}`)) {
-    //         console.log("dentro do if")
-    //         console.log(usuarioSelecionado + " usuario previamente escolhido")
-    //         document.querySelector(`.${usuarioSelecionado}`).nextElementSibling.add("check");
-    //         document.querySelector(`.${usuarioSelecionado}`).nextElementSibling.remove("escondido");
-    //     } else {
-    //         console.log("dentro do else")
-    //         document.querySelector(".contato-todos").lastElementChild.classList.add("check")
-    //         document.querySelector(".contato-todos").lastElementChild.classList.remove("escondido")
-    //     }
-    //     atualizaUsuarios = 0;
-    //     return;
-    // }
-
-
     document.querySelector(".escolha-contato").querySelector(".check").classList.add("escondido");
     document.querySelector(".escolha-contato").querySelector(".check").classList.remove("check");
     el.nextElementSibling.classList.add("check");
     el.nextElementSibling.classList.remove("escondido");
     usuarioSelecionado = el.innerText;
-    console.log(usuarioSelecionado + " usuario que eu selecionei;")
 
+    //atualiza a barra te enviar texto, dizendo com quem está falando
+    atualizaInput();
 }
 
 //FUNÇÃO QUE SELECIONA A PRIVACIDADE DA CONVERSA
@@ -194,6 +182,9 @@ function selecionarVisibilidade(el) {
     el.nextElementSibling.classList.add("check");
     el.nextElementSibling.classList.remove("escondido");
     privacidadeSelecionada = el.innerText;
+
+    //atualiza a barra te enviar texto, dizendo com quem está falando
+    atualizaInput();
 }
 
 // FUNÇÃO QUE ENVIA MENSAGEM
@@ -237,3 +228,19 @@ function menuLateral() {
     menu.classList.add("escondido");
     fundo.classList.add("escondido");
 }
+
+// IMPLEMENTANDO O ENTER PARA ENVIAR INPUT DO NOME
+document.querySelector(".pagina-entrada input").addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+    event.preventDefault();
+    document.querySelector(".pagina-entrada button").click();
+    }
+});
+
+// IMPLEMENTANDO O ENTER PARA ENVIAR INPUT DA MENSAGEM
+document.querySelector(".pagina .rodape input").addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector(".pagina .rodape ion-icon").click();
+    }
+});

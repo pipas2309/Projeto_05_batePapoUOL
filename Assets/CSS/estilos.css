@@ -143,10 +143,6 @@ strong {
     font-weight: 700;
 }
 
-.texto-mensagem {
-
-}
-
 .aviso {
     background-color: #DCDCDC;
 }
@@ -182,10 +178,6 @@ strong {
 
 .rodape input::placeholder {
     color: #000000;
-}
-
-.rodape ion-icon {
-    
 }
 
 
@@ -323,4 +315,9 @@ strong {
     height: 100%;
     cursor: pointer;
     z-index: 2;
+}
+
+.gato {
+    max-width: 500px;
+    height: auto;
 }
