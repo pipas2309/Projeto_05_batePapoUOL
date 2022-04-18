@@ -149,9 +149,9 @@ function selecionarUsuario(el) {
     
 }
 
+//FUNÇÃO QUE SELECIONA A PRIVACIDADE DA CONVERSA
 function selecionarVisibilidade(el) {
     if(el.innerText === privacidadeSelecionada) {
-        console.log("faz nada")
         return;
     }
     document.querySelector(".escolha-visibilidade").querySelector(".check").classList.add("escondido");
@@ -159,7 +159,6 @@ function selecionarVisibilidade(el) {
     el.nextElementSibling.classList.add("check");
     el.nextElementSibling.classList.remove("escondido");
     privacidadeSelecionada = el.innerText;
-    console.log(privacidadeSelecionada + " nova pS");
 }
 
 // FUNÇÃO QUE ENVIA MENSAGEM
@@ -193,3 +192,14 @@ function enviarMensagem() {
     const promisse = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", mensagem);
 }
 
+function menuLateral() {
+    const menu = document.querySelector(".menu-lateral");
+    const fundo = document.querySelector(".fundo");
+    if(menu.classList.contains(escondido)) {
+        menu.classList.remove("escondido");
+        fundo.classList.remove("escondido");
+        return;
+    }
+    menu.classList.add("escondido");
+    fundo.classList.add("escondido");
+}
