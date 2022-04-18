@@ -154,12 +154,25 @@ function selecionarVisibilidade(el) {
 }
 
 function enviarMensagem() {
-    const input = document.querySelector("input").value;
-    console.log(input)
-    const usuarioSelecionado = document.querySelector(".escolha-contato").querySelector(".check").parentElement;
-    const privacidadeSelecionada = document.querySelector(".escolha-visibilidade").querySelector(".check").parentElement;
+    const input = document.querySelector(".pagina").querySelector("input").value;
+    const mensagem = {};
 
-    if(usuarioSelecionado.classList.contains("contato-todos")) {
+    const visivilidade = document.querySelector(".escolha-visibilidade").querySelector(".check").previousElementSibling.innerText;
+    console.log(visivilidade);
+    const usuario = document.querySelector(".escolha-contato").querySelector(".check").previousElementSibling.innerText;
+    console.log(usuario);
 
+    if(visivilidade === "Público") {
+        mensagem = 
+        {
+            from: nomeUsuario.name,
+            to: usuarioSelecionado,
+            text: input,
+            type: "message"
+        };
+
+        const promisse = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", mensagem);
+        promisse.catch(function(){
+            window.location.reload();
+        })
     }
-}
