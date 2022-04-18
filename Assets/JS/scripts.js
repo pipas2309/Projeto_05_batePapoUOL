@@ -63,7 +63,7 @@ function falhaLogin (erro) {
     alert(`ERRO DETECTADO\nVocê não poderá entrar com o nome escolhido, selecione outro!`);
 }
 
-// FUNÇÃO DE MANTER CONEXÃO DO USUÁRIO
+// FUNÇÃO QUE MANTEM A CONEXÃO, PARTICIPANTES E MENSAGENS ATUALIZADAS
 function conexaoEstavel() {
 
     //Manter conexão API - Status - FUNCIONANDO
@@ -96,7 +96,7 @@ function carregarMensagens(el) {
             area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong></em>${lista[i].text}</p></div>`;
         } else if (lista[i].type === "message") {
             area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
-        } else if (lista[i].type === "private_message" && lista[i].to === nomeUsuario.name) {
+        } else if (lista[i].type === "private_message" && (lista[i].to === nomeUsuario.name || lista[i].to === "Todos")) {
             area.innerHTML += `<div class='mensagem privado'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> reservadamente para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
         }
     }
@@ -131,35 +131,65 @@ function participantesAtivos(el) {
 
 function selecionarUsuario(el) {
 
-    const elementoSelecionado = document.querySelector(".escolha-contato").querySelector(".check");
-    const novoSelecionado = el;
+    // const elementoSelecionado = document.querySelector(".escolha-contato").querySelector(".check");
+    // const novoSelecionado = el;
 
-    console.log(elementoSelecionado + " elementoSelecionado");
-    console.log(el + " this");
+    // console.log(elementoSelecionado + " elementoSelecionado");
+    // console.log(el + " this");
 
-    elementoSelecionado.classList.add("escondido");
-    elementoSelecionado.classList.remove("check");
+    // elementoSelecionado.classList.add("escondido");
+    // elementoSelecionado.classList.remove("check");
 
-    novoSelecionado.nextElementSibling.classList.add("check");
-    novoSelecionado.nextElementSibling.classList.remove("escondido");
+    // novoSelecionado.nextElementSibling.classList.add("check");
+    // novoSelecionado.nextElementSibling.classList.remove("escondido");
 
-    console.log(el.nextElementSibling);
+    // console.log(el.nextElementSibling);
 
     
     
 }
 
 function selecionarVisibilidade(el) {
-    console.log(el)
-}
-
-function enviarMensagem() {
-    const input = document.querySelector("input").value;
-    console.log(input)
-    const usuarioSelecionado = document.querySelector(".escolha-contato").querySelector(".check").parentElement;
-    const privacidadeSelecionada = document.querySelector(".escolha-visibilidade").querySelector(".check").parentElement;
-
-    if(usuarioSelecionado.classList.contains("contato-todos")) {
-
+    if(el.innerText === privacidadeSelecionada) {
+        console.log("faz nada")
+        return;
     }
+    document.querySelector(".escolha-visibilidade").querySelector(".check").classList.add("escondido");
+    document.querySelector(".escolha-visibilidade").querySelector(".check").classList.remove("check");
+    el.nextElementSibling.classList.add("check");
+    el.nextElementSibling.classList.remove("escondido");
+    privacidadeSelecionada = el.innerText;
+    console.log(privacidadeSelecionada + " nova pS");
 }
+
+// FUNÇÃO QUE ENVIA MENSAGEM
+function enviarMensagem() {
+    const input = document.querySelector(".pagina").querySelector("input");
+    let mensagem = {};
+    const visivilidade = document.querySelector(".escolha-visibilidade").querySelector(".check").previousElementSibling.innerText;
+    const usuario = document.querySelector(".escolha-contato").querySelector(".check").previousElementSibling.innerText;
+
+    if(privacidadeSelecionada === "Público") {
+        mensagem = 
+        {
+            "from": nomeUsuario.name,
+            "to": usuarioSelecionado,
+            "text": input.value,
+            "type": "message"
+        };
+    }
+    
+    if(privacidadeSelecionada === "Reservadamente") {
+        mensagem = 
+        {
+            "from": nomeUsuario.name,
+            "to": usuarioSelecionado,
+            "text": input.value,
+            "type": "private_message"
+        };
+    }
+
+    input.value="";
+    const promisse = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", mensagem);
+}
+
