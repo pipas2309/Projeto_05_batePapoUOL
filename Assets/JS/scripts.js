@@ -7,6 +7,21 @@ let usuarioSelecionado = "Todos";
 let privacidadeSelecionada = "Público";
 let atualizaUsuarios = 0;
 
+// IMPLEMENTANDO O ENTER PARA ENVIAR INPUT
+document.querySelector(".pagina-entrada input").addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+    event.preventDefault();
+    document.querySelector(".pagina-entrada button").click();
+    }
+});
+document.querySelector(".pagina .rodape input").addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector(".pagina .rodape ion-icon").click();
+    }
+});
+
+
 // BOTÃO ENTRADA NO BATE-PAPO
 function entrarBatePapo() {
     const recebeInput = document.querySelector("input").value;
