@@ -13,6 +13,8 @@ function entrarBatePapo() {
 
     const requisicao = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants", nomeUsuario);
 
+    document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando gato' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
+
     requisicao.then(usuarioRegistrado);
     requisicao.catch(falhaLogin);
 
@@ -31,22 +33,6 @@ function usuarioRegistrado (resposta) {
         participantes.then(participantesAtivos);
     },500)
 
-    // console.log(nomeUsuario.name)
-    // let usuario = 
-    // {
-    //     "from": nomeUsuario.name,
-    //     "to": "Todos",
-    //     "text": "entrou na sala...",
-    //     "type": "status"
-    // }
-    
-    // const promisse = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', usuario);
-
-    // promisse.then(entrandoNaPagina)
-    // promisse.catch(falhaLogin)
-
-    document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
-
     return conexaoEstavel();
 }
 
@@ -58,6 +44,8 @@ function falhaLogin (erro) {
     if(document.querySelector(".erro")) {
         document.querySelector(".erro").remove();
     }
+
+    document.querySelector(".gato").remove();
 
     document.querySelector("button").insertAdjacentHTML("afterend", `<img class='erro' src='https://http.cat/${erro.response.status}' alt='Gatos por toda parte ♥'>`);
     alert(`ERRO DETECTADO\nVocê não poderá entrar com o nome escolhido, selecione outro!`);
@@ -100,6 +88,7 @@ function carregarMensagens(el) {
             area.innerHTML += `<div class='mensagem privado'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> reservadamente para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
         }
     }
+    // Quando a página é iniciada pela primeira vez, muda o layout
     if(entrando === 0) {
         document.querySelector(".pagina-entrada").classList.add("escondido");
         document.querySelector(".pagina").classList.remove("escondido");
@@ -195,7 +184,7 @@ function enviarMensagem() {
 function menuLateral() {
     const menu = document.querySelector(".menu-lateral");
     const fundo = document.querySelector(".fundo");
-    if(menu.classList.contains(escondido)) {
+    if(menu.classList.contains("escondido")) {
         menu.classList.remove("escondido");
         fundo.classList.remove("escondido");
         return;
