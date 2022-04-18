@@ -28,42 +28,36 @@
         </div>
         <div class="rodape">
             <input type="text" placeholder="Escreva aqui...">
-            <ion-icon onclick="enviarMensagem(this)" name="paper-plane-outline"></ion-icon>
+            <ion-icon onclick="enviarMensagem()" name="paper-plane-outline"></ion-icon>
         </div>
     </div>
     <div class="menu-lateral escondido">
         <div class="escolha-contato">
             <p>Escolha um contato para enviar mensagem:</p>
             <div class="contato-todos">
-                <span>
+                <span onclick="selecionarUsuario(this)">
                     <ion-icon name="people"></ion-icon>
                     <p>Todos</p>
                 </span>
                 <ion-icon class="check" name="checkmark-sharp"></ion-icon>
             </div>
-            <div class="contato-ativo">
-                <span>
-                    <ion-icon name="person-circle"></ion-icon>
-                    <p>Maria</p>
-                </span>
-                <ion-icon class="check" name="checkmark-sharp"></ion-icon>
-            </div>
+            <div class="contato-ativo"></div>
         </div>
         <div class="escolha-visibilidade">
             <p>Escolha a visibilidade:</p>
             <div class="visibilidade-publica">
-                <span>
+                <span onclick="selecionarVisibilidade(this)">
                     <ion-icon name="lock-open"></ion-icon>
                     <p>Público</p>
                 </span>
                 <ion-icon class="check" name="checkmark-sharp"></ion-icon>
             </div>
             <div class="visibilidade-privada">
-                <span>
+                <span onclick="selecionarVisibilidade(this)">
                     <ion-icon name="lock-closed"></ion-icon>
                     <p>Reservadamente</p>
                 </span>
-                <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                <ion-icon class="escondido" name="checkmark-sharp"></ion-icon>
             </div>
         </div>
     </div>

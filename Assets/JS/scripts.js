@@ -1,8 +1,10 @@
 // VARIÁVEIS GLOBAIS
 const nomeUsuario = {}
 let lista = [];
-let novaLista = [];
+let participantesOnline = [];
 let entrando = 0;
+let usuarioSelecionado = "Todos";
+let privacidadeSelecionada = "Público";
 
 // BOTÃO ENTRADA NO BATE-PAPO
 function entrarBatePapo() {
@@ -22,6 +24,12 @@ function usuarioRegistrado (resposta) {
     if(document.querySelector(".erro")) {
         document.querySelector(".erro").remove();
     }
+
+    //Atualiza os usuários online ao entrar na página, uma única vez
+    const listaInicial = setTimeout(function() {
+        const participantes = axios.get("https://mock-api.driven.com.br/api/v6/uol/participants");
+        participantes.then(participantesAtivos);
+    },500)
 
     // console.log(nomeUsuario.name)
     // let usuario = 
@@ -55,12 +63,7 @@ function falhaLogin (erro) {
     alert(`ERRO DETECTADO\nVocê não poderá entrar com o nome escolhido, selecione outro!`);
 }
 
-// // FUNÇÃO DE MANTER CONEXÃO DO USUÁRIO
-// function estouOnline () {
-
-//     const online = axios.post("https://mock-api.driven.com.br/api/v6/uol/status", nomeUsuario);
-// }
-
+// FUNÇÃO DE MANTER CONEXÃO DO USUÁRIO
 function conexaoEstavel() {
 
     //Manter conexão API - Status - FUNCIONANDO
@@ -70,14 +73,15 @@ function conexaoEstavel() {
 
     //Manter usuários atualizados API - Participants
     const participantesConectados = setInterval(function() {
-
-    },10000)
+        const participantes = axios.get("https://mock-api.driven.com.br/api/v6/uol/participants");
+        participantes.then(participantesAtivos);
+    },10000);
 
     //Manter Chat Vivo API - Messages
     const mensagensAtualizadas = setInterval(function(){
         const promisse = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
         promisse.then(carregarMensagens);
-    },3000)
+    },3000);
 }
 
 // Função que carrega e recarrega as mensagens no site
@@ -92,8 +96,8 @@ function carregarMensagens(el) {
             area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong></em>${lista[i].text}</p></div>`;
         } else if (lista[i].type === "message") {
             area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
-        } else if (lista[i].type === "private_message") {
-            area.innerHTML += `<div class='mensagem'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
+        } else if (lista[i].type === "private_message" && lista[i].to === nomeUsuario.name) {
+            area.innerHTML += `<div class='mensagem privado'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> reservadamente para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
         }
     }
     if(entrando === 0) {
@@ -105,12 +109,57 @@ function carregarMensagens(el) {
     area.scrollIntoView(false)
 }
 
-
+// Atualiza os participantes ativos na pagina
 function participantesAtivos(el) {
+
+    participantesOnline = el.data;
+    const contatosAtivos = document.querySelector(".contato-ativo");
+    contatosAtivos.innerHTML = "";
+    for(let i = 0; i < participantesOnline.length; i++) {
+        contatosAtivos.innerHTML += `
+        <div class="usuario">
+            <span onclick="selecionarUsuario(this)">
+                <ion-icon name="person-circle"></ion-icon>
+                <p>${participantesOnline[i].name}</p>
+            </span>
+            <ion-icon class="escondido" name="checkmark-sharp"></ion-icon>
+        </div>
+        `
+    }
 
 }
 
+function selecionarUsuario(el) {
+
+    const elementoSelecionado = document.querySelector(".escolha-contato").querySelector(".check");
+    const novoSelecionado = el;
+
+    console.log(elementoSelecionado + " elementoSelecionado");
+    console.log(el + " this");
+
+    elementoSelecionado.classList.add("escondido");
+    elementoSelecionado.classList.remove("check");
+
+    novoSelecionado.nextElementSibling.classList.add("check");
+    novoSelecionado.nextElementSibling.classList.remove("escondido");
+
+    console.log(el.nextElementSibling);
+
+    
+    
+}
+
+function selecionarVisibilidade(el) {
+    console.log(el)
+}
 
 function enviarMensagem() {
-    document.querySelector(".")
+    const input = document.querySelector("input").value;
+    console.log(input)
+    const usuarioSelecionado = document.querySelector(".escolha-contato").querySelector(".check").parentElement;
+    const privacidadeSelecionada = document.querySelector(".escolha-visibilidade").querySelector(".check").parentElement;
+
+    if(usuarioSelecionado.classList.contains("contato-todos")) {
+
+    }
 }
