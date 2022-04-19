@@ -1,6 +1,5 @@
 // VARIÁVEIS GLOBAIS
 const nomeUsuario = {};
-let lista = [];
 let participantesOnline = [];
 let entrando = 0;
 let usuarioSelecionado = "Todos";
@@ -19,6 +18,7 @@ function entrarBatePapo() {
     document.querySelector("button").insertAdjacentHTML("afterend", `<img class='entrando gato' src='/Projeto_05_batePapoUOL/Assets/imagens/carregato.gif' alt='mais gato'>`);
     if(document.querySelector(".erro")) {
         document.querySelector(".erro").remove();
+        document.querySelector(".erro2").remove();
     }
 
     requisicao.then(usuarioRegistrado);
@@ -33,24 +33,21 @@ function usuarioRegistrado (resposta) {
     const listaInicial = setTimeout(function() {
         const participantes = axios.get("https://mock-api.driven.com.br/api/v6/uol/participants");
         participantes.then(participantesAtivos);
-    },500)
+    },500);
 
     return conexaoEstavel();
 }
 
 // FUNÇÃO SE NÃO FOR POSSÍVEL ENTRAR NO BATE-PAPO COM O NOME ESCOLHIDO
 function falhaLogin (erro) {
-    console.log(erro.response.data);
-    console.log(erro.response.status);
-
     if(document.querySelector(".erro")) {
         document.querySelector(".erro").remove();
+        document.querySelector(".erro2").remove();
     }
-
     document.querySelector(".gato").remove();
 
-    document.querySelector("button").insertAdjacentHTML("afterend", `<img class='erro' src='https://http.cat/${erro.response.status}' alt='Gatos por toda parte ♥'>`);
-    alert(`ERRO DETECTADO\nVocê não poderá entrar com o nome escolhido, selecione outro!`);
+    document.querySelector("button").insertAdjacentHTML("afterend", `<p class="erro2">Nome de usuário inválido ou em uso, escolha outro</p><img class='erro' src='https://http.cat/${erro.response.status}' alt='Gatos por toda parte ♥'>`);
+    
 }
 
 // FUNÇÃO QUE MANTEM A CONEXÃO, PARTICIPANTES E MENSAGENS ATUALIZADAS
@@ -76,12 +73,11 @@ function conexaoEstavel() {
 
 // Função que carrega e recarrega as mensagens no site
 function carregarMensagens(el) {
-    lista = el.data;
+    let lista = el.data;
     const area = document.querySelector(".area-mensagens");
     area.innerHTML = "";
 
     for (let i = 0; i < lista.length; i++) {
-        
         if(lista[i].type === "status") {
             area.innerHTML += `<div class='mensagem aviso'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong></em>${lista[i].text}</p></div>`;
         } else if (lista[i].type === "message") {
@@ -90,13 +86,13 @@ function carregarMensagens(el) {
             area.innerHTML += `<div class='mensagem privado'><p><em class='hora'>${lista[i].time}</em> <em class='chat-usuarios'><strong>${lista[i].from}</strong> reservadamente para <strong>${lista[i].to}</strong>:</em>${lista[i].text}</p></div>`;
         }
     }
+
     // Quando a página é iniciada pela primeira vez, muda o layout
     if(entrando === 0) {
         document.querySelector(".pagina-entrada").classList.add("escondido");
         document.querySelector(".pagina").classList.remove("escondido");
         entrando = 1;
     }
-
     area.scrollIntoView(false)
 }
 
@@ -211,21 +207,30 @@ function enviarMensagem() {
             "type": "private_message"
         };
     }
-
     input.value="";
+
+    //garante que há mensagem
+    if(mensagem.text === "" || mensagem.text === null || mensagem.text === undefined) {
+        return;
+    }
+
+    //envia a mensagem e já carrega ela
     const promisse = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", mensagem);
+    const mensagensChat = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
+    mensagensChat.then(carregarMensagens);
+    promisse.catch(window.location.reload);
 }
 
 // FUNÇÃO QUE ABRE E FECHA O MENU LATERAL
 function menuLateral() {
     const menu = document.querySelector(".menu-lateral");
     const fundo = document.querySelector(".fundo");
-    if(menu.classList.contains("escondido")) {
-        menu.classList.remove("escondido");
+    if(menu.classList.contains("escondido-lateral")) {
+        menu.classList.remove("escondido-lateral");
         fundo.classList.remove("escondido");
         return;
     }
-    menu.classList.add("escondido");
+    menu.classList.add("escondido-lateral");
     fundo.classList.add("escondido");
 }
 
